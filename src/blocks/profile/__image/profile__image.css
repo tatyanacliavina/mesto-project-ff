@@ -1,7 +1,7 @@
 .profile__image {
   width: 120px;
   height: 120px;
-  background: transparent url('../../../src/images/avatar.jpg') center no-repeat;
+  background: transparent url('../../../images/avatar.jpg') center no-repeat;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   border-radius: 50%;

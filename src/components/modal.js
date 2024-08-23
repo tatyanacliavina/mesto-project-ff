@@ -9,8 +9,8 @@ export function openMod(item) {
 }
 
 export function closeEscape(event) {
-  const openModal = document.querySelector(".popup_is-opened");
-  if (event.key == "Escape" && openModal) {
+  if (event.key === "Escape" && document.querySelector(".popup_is-opened")) {
+    const openModal = document.querySelector(".popup_is-opened");
     closeMod(openModal);
   }
 }

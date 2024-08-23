@@ -1,36 +1,32 @@
-import { initialCards } from "./cards.js";
+import { initialCards } from "./components/cards.js";
 import "./index.css";
-import {
-  addCard,
-  addCardForm,
-  newCard,
-  formCard,
-  placesList,
-  deleteCard,
-  likeIt,
-  imagePopup,
-} from "./card.js";
-import { openMod, closeMod, closeOverlay } from "./modal.js";
+import { createCard, deleteCard, likeIt } from "./components/card.js";
+import { openMod, closeMod, closeOverlay } from "./components/modal.js";
+
+const cardsContainer = document.querySelector(".places__list");
 
 initialCards.forEach((item) => {
-  placesList.append(addCard(item, deleteCard, onClick, likeIt));
+  cardsContainer.append(createCard(item, deleteCard, onClickImage, likeIt));
 });
 
 const buttonEditProfile = document.querySelector(".profile__edit-button");
 const typeEditPopup = document.querySelector(".popup_type_edit");
 const buttonClose = document.querySelector(".popup__close");
 const buttonAdd = document.querySelector(".profile__add-button");
-const buttonCloseAdd = newCard.querySelector(".popup__close");
+const cardModal = document.querySelector(".popup_type_new-card");
+const imagePopup = document.querySelector(".popup_type_image");
+const buttonCloseAdd = cardModal.querySelector(".popup__close");
 const buttonCloseImage = imagePopup.querySelector(".popup__close");
-const formElement = document.querySelector('[name="edit-profile"]');
-const nameInput = formElement.querySelector(".popup__input_type_name");
-const jobInput = formElement.querySelector(".popup__input_type_description");
+const formProfile = document.querySelector('[name="edit-profile"]');
+const nameInput = formProfile.querySelector(".popup__input_type_name");
+const jobInput = formProfile.querySelector(".popup__input_type_description");
 const profileTitle = document.querySelector(".profile__title");
 const profileJob = document.querySelector(".profile__description");
+const formCard = document.querySelector('[name="new-place"]');
 
-formCard.addEventListener("submit", event => addCardForm(event, closeMod, onClick) );
+formCard.addEventListener("submit", (event) => addCard(event, closeMod));
 
-formElement.addEventListener("submit", handleFormSubmit);
+formProfile.addEventListener("submit", handleFormSubmitProfile);
 
 buttonCloseImage.addEventListener("click", function () {
   closeMod(imagePopup);
@@ -43,7 +39,7 @@ buttonEditProfile.addEventListener("click", function () {
 });
 
 buttonAdd.addEventListener("click", function () {
-  openMod(newCard);
+  openMod(cardModal);
 });
 
 buttonClose.addEventListener("click", function () {
@@ -51,7 +47,7 @@ buttonClose.addEventListener("click", function () {
 });
 
 buttonCloseAdd.addEventListener("click", function () {
-  closeMod(newCard);
+  closeMod(cardModal);
 });
 
 imagePopup.addEventListener("click", (event) =>
@@ -62,21 +58,33 @@ typeEditPopup.addEventListener("click", (event) =>
   closeOverlay(event, typeEditPopup)
 );
 
-newCard.addEventListener("click", (event) => closeOverlay(event, newCard));
+cardModal.addEventListener("click", (event) => closeOverlay(event, cardModal));
 
-function onClick(item) {
-  const openedImage = imagePopup.querySelector(".popup__image");
-  const textImage = imagePopup.querySelector(".popup__caption");
-  openedImage.src = item.target.src;
-  openedImage.alt = item.target.alt;
-  textImage.textContent = item.target.alt;
+const openedImage = imagePopup.querySelector(".popup__image");
+const textImage = imagePopup.querySelector(".popup__caption");
+function onClickImage(event) {
+  openedImage.src = event.target.src;
+  openedImage.alt = event.target.alt;
+  textImage.textContent = event.target.alt;
   openMod(imagePopup);
 }
-function handleFormSubmit(evt) {
+function handleFormSubmitProfile(evt) {
   evt.preventDefault();
   let nameInputValue = nameInput.value;
   let jobInputVAlue = jobInput.value;
   profileTitle.textContent = nameInputValue;
   profileJob.textContent = jobInputVAlue;
   closeMod(typeEditPopup);
+}
+function addCard(evt) {
+  evt.preventDefault();
+  const nameInputCard = formCard.querySelector(".popup__input_type_card-name");
+  const linkInputCard = formCard.querySelector(".popup__input_type_url");
+  cardModal.name = nameInputCard.value;
+  cardModal.link = linkInputCard.value;
+  cardsContainer.prepend(
+    createCard(cardModal, deleteCard, onClickImage, likeIt)
+  );
+  formCard.reset();
+  closeMod(cardModal);
 }

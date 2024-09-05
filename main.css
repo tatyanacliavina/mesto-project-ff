@@ -445,6 +445,7 @@ template {
   }
 }
 
+
 .content {
   flex-shrink: 0;
   flex-grow: 1;
@@ -950,4 +951,7 @@ template {
   transition: visibility 0s, opacity 0.6s;
 }
 
+.form_input_type_error {
+  border-bottom-color: #FF0000;
+}
 

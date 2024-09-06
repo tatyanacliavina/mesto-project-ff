@@ -955,6 +955,10 @@ template {
   border-bottom-color: #FF0000;
 }
 
+.form__input-error {
+  display: none;
+}
+
 .form__input-error_active {
   font-family: Inter;
   font-size: 12px;
@@ -962,9 +966,8 @@ template {
   line-height: 14.52px;
   text-align: left;
   color: #FF0000;
+  display: block;
 }
 
-.form__input-error {
-  display: none;
-}
+
 

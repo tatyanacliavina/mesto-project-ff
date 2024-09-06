@@ -962,7 +962,6 @@ template {
   line-height: 14.52px;
   text-align: left;
   color: #FF0000;
-  display: block;
 }
 
 .form__input-error {

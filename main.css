@@ -903,6 +903,9 @@ template {
   }
 }
 
+.form__submit_inactive {
+  opacity: 20%;
+}
 .popup__caption {
   font-size: 12px;
   line-height: 15px;

@@ -13,6 +13,7 @@ function showInputError(
 function hideInputError(formElement, inputElement, configuration) {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.remove(configuration.inputErrorClass);
+  inputElement.setCustomValidity("");
   errorElement.classList.remove(configuration.errorClass);
   errorElement.textContent = "";
 }
@@ -80,7 +81,11 @@ export function clearValidation(formElement, configuration) {
   const inputList = Array.from(
     formElement.querySelectorAll(configuration.inputSelector)
   );
+  const buttonElement = formElement.querySelector(
+    configuration.submitButtonSelector
+  );
   inputList.forEach((inputElement) => {
     hideInputError(formElement, inputElement, configuration);
   });
+  toggleButtonState(inputList, buttonElement, configuration);
 }

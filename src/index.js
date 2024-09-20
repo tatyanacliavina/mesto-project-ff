@@ -1,6 +1,7 @@
 import "./index.css";
 import { createCard, deleteCard, likeIt } from "./components/card.js";
 import { openMod, closeMod, closeOverlay } from "./components/modal.js";
+import {nameButton, loading} from "./components/utils.js";
 import { enableValidation, clearValidation } from "./components/validation.js";
 import {
   promisProfile,
@@ -15,7 +16,7 @@ let userId;
 const cardsContainer = document.querySelector(".places__list");
 const buttonEditProfile = document.querySelector(".profile__edit-button");
 const typeEditPopup = document.querySelector(".popup_type_edit");
-const buttonClose = document.querySelector(".popup__close");
+const buttonCloseEditProfileForm = document.querySelector(".popup__close");
 const buttonAdd = document.querySelector(".profile__add-button");
 const cardModal = document.querySelector(".popup_type_new-card");
 const imagePopup = document.querySelector(".popup_type_image");
@@ -31,10 +32,12 @@ const formAvatar = document.querySelector('[name="update-avatar"]');
 const popupAvatar = document.querySelector(".popup_type_update_avatar");
 const avatarInput = popupAvatar.querySelector(".popup__input_type_url");
 const buttonCloseUpAv = popupAvatar.querySelector(".popup__close");
-const chopper = document.querySelector(".places__chopper");
+
 const imageAvatar = document.querySelector(".profile__image");
 const openedImage = imagePopup.querySelector(".popup__image");
 const textImage = imagePopup.querySelector(".popup__caption");
+const nameInputCard = formCard.querySelector(".popup__input_type_card-name");
+const linkInputCard = formCard.querySelector(".popup__input_type_url");
 const validConfig = {
   formSelector: ".popup__form",
   inputSelector: ".popup__input",
@@ -79,7 +82,7 @@ buttonCloseUpAv.addEventListener("click", function () {
   closeMod(popupAvatar);
 });
 
-buttonClose.addEventListener("click", function () {
+buttonCloseEditProfileForm.addEventListener("click", function () {
   closeMod(typeEditPopup);
 });
 
@@ -131,39 +134,37 @@ function onClickImage(event) {
 function handleFormSubmitProfile(evt) {
   evt.preventDefault();
   nameButton(formProfile, "Сохранение...");
-  let nameInputValue = nameInput.value;
-  let jobInputValue = jobInput.value;
+  const nameInputValue = nameInput.value;
+  const jobInputValue = jobInput.value;
   saveInfoProfile(nameInputValue, jobInputValue)
     .then((result) => {
       updateProfileInfo(result);
+      closeMod(typeEditPopup);
     })
     .catch((err) => {
       console.error(err);
     })
     .finally(() => {
       nameButton(formProfile, "Сохранить");
-      closeMod(typeEditPopup);
     });
 }
 
 function addCard(evt) {
   evt.preventDefault();
   nameButton(formCard, "Сохранение...");
-  const nameInputCard = formCard.querySelector(".popup__input_type_card-name");
-  const linkInputCard = formCard.querySelector(".popup__input_type_url");
   saveCard(nameInputCard.value, linkInputCard.value)
     .then((result) => {
       cardsContainer.prepend(
         createCard(result, deleteCard, onClickImage, likeIt, userId)
       );
       formCard.reset();
+      closeMod(cardModal);
     })
     .catch((err) => {
       console.error(err);
     })
     .finally(() => {
       nameButton(formCard, "Сохранить");
-      closeMod(cardModal);
     });
 }
 
@@ -180,24 +181,13 @@ function avatarSubmit(evt) {
   saveNewAvatar(avatarLink)
     .then((res) => {
       imageAvatar.style.backgroundImage = ` url(${res.avatar})`;
+      clearValidation(formAvatar, validConfig);
+      closeMod(popupAvatar);
     })
     .catch((err) => {
       console.error(err);
     })
     .finally(() => {
       nameButton(popupAvatar, "Сохранить");
-      closeMod(popupAvatar);
     });
-}
-
-function nameButton(popup, name) {
-  popup.querySelector(".popup__button").textContent = name;
-}
-
-function loading(isLoading) {
-  if (isLoading) {
-    chopper.classList.add("chopper_visible");
-  } else {
-    chopper.classList.remove("chopper_visible");
-  }
 }

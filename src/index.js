@@ -63,7 +63,6 @@ buttonEditProfile.addEventListener("click", function () {
 buttonAdd.addEventListener("click", function () {
   openMod(cardModal);
   formCard.reset();
-  clearValidation(formCard, validConfig);
 });
 
 imageAvatar.addEventListener("click", function () {
@@ -158,6 +157,7 @@ function addCard(evt) {
         createCard(result, deleteCard, onClickImage, likeIt, userId)
       );
       formCard.reset();
+      clearValidation(formCard, validConfig);
       closeMod(cardModal);
     })
     .catch((err) => {

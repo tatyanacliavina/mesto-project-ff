@@ -181,7 +181,6 @@ function avatarSubmit(evt) {
   saveNewAvatar(avatarLink)
     .then((res) => {
       imageAvatar.style.backgroundImage = ` url(${res.avatar})`;
-      clearValidation(formAvatar, validConfig);
       closeMod(popupAvatar);
     })
     .catch((err) => {
